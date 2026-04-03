@@ -1,39 +1,63 @@
-#This program will let user input an array or generate a random array with 10 elements then ask user to select a number and program will find the number in the
-#array using binary search by asking user if the number is higher or lower then x number and go lower or higher until the number is found or not found in 
-# the array. The program will also count the number of guesses it takes to find the number. It will also ask user to play again after the game is over.
-# The program fronend is in gradio and the backend is in python. 
-
 # Import all the libraries for the program. Gradio for the frontend and random for generating values for the array.
 import gradio as gr
 import random as r
 
+# Define a function to start the game. It Generates a random sorted array of 10 integers between 1 and 100.
 def start():
     arr = sorted([r.randint(1, 100) for _ in range(10)])
+    # Return the initial state of the game, including the array
     return init_state_from_array(arr)
 
+# Define a function for initializing state from the array. It sets the low and high, guess count, mid and guess values based on the input array, and message to ask the user if there number is the guess.
 def init_state_from_array(arr):
+    # Define the variables need to keep track of the game state
+    # define low and high to keep track of the current search range
     low = 0
     high = len(arr) - 1
+    # Guess count to keep how many guesses the program has made and starts at 1 if its 0 then its a logical error because 
+    # we are making the first guess right after this function is called
     guessCount = 1
 
+    # To find the mid you add low and high and divide by 2 this will give the index of the middle element in the current range of the array
     mid = (low + high) // 2
+    # The guess is the value at the mid index of the array
     guess = arr[mid]
 
+    # The message is a f string that is asking user if this is their number and it will display the guess value in the message
     message = f"Is your number {guess}?"
+    # Return all the variables to use later in the game
     return arr, low, high, guessCount, guess, message, mid
 
+# Define a function to parse the array text input by the user.
 def parse_array_text(arr_text):
+    # Split the input text by commas, strip whitespace, and convert to integers. It also filters out any empty parts that may result from extra commas or spaces. 
+    # If there are no valid integers, it raises a ValueError.
     parts = [p.strip() for p in arr_text.split(",") if p.strip()]
+    #If there are no valid integers, it raises a ValueError.
     if not parts:
+        # This is to make sure that the user enters atleast one integer in the input
+        # If it doesn't it will raise an error and prompt the user to enter a valid input
         raise ValueError("Please enter at least one integer.")
+    # Convert the valid parts to integers and store them in a list. This will be the array that the game will use for guessing
+    # Store the integers in a list called numbers.
     numbers = [int(p) for p in parts]
+    # This will return the sorted list of integers that the user entered. 
+    # This is important to sort for binary search to work correctly
     return sorted(numbers)
 
-def guess_number(arr, low, high, guessCount, guess, message, user_input, mid):
+# Define a function to handle the user response to guesses. This function takes in the current game state and the user input and updates the game state
+# It is also calling variables from other functions to update the game state based on the user input of whether the guess is higher or lower or correct
+def guess_number(arr, low, high, guessCount, guess, message, mid, user_input):
+    # Define a if statment  and see if its equal to higher?
     if user_input == "Higher":
+        # If its higher then we add low to mid + 1 because we know that the number must be higher 
+        # than the current guess so we can eliminate all the numbers that are less than or equal to the current guess and update low to mid + 1
         low = mid + 1
+    # If the user input is lower then
     elif user_input == "Lower":
+        # we update the high to mid - 1 because we know that the number must be lower than the current guess
         high = mid - 1
+    # If the user input is correct then we return with a congratulatory message and the number of guesses it took to find the number
     elif user_input == "Correct":
         return arr, low, high, guessCount, guess, f"Congratulations! You've found the number {guess} in {guessCount} guesses.", mid
     
@@ -47,7 +71,10 @@ def guess_number(arr, low, high, guessCount, guess, message, user_input, mid):
     message = f"Is your number {guess}?"
     return arr, low, high, guessCount, guess, message, mid
 
+# Define a function to handle the user input using a costume array.
+# This function takes in the text input for the array and the current array state
 def use_typed_array(arr_text, current_arr):
+    # raw_text is the stripped version of the input text. If the input is empty or only contains white space, then
     raw_text = (arr_text or "").strip()
     if not raw_text:
         low = 0
@@ -72,8 +99,13 @@ def use_typed_array(arr_text, current_arr):
     arr, low, high, guessCount, guess, message, mid = init_state_from_array(arr)
     return arr, low, high, guessCount, guess, message, mid, str(arr), message
 
+# Define a function to generate a new random array and start the game with it.
+# This function is only called when the user clicks the "Generate New Array" button and it will creata new random array
 def generate_random_array():
+    # All the variables init_state_from_array, guess_number, use_typed_array are called to generate a new random array and start the game with it.
+    # they are being sent to the start function to generate a new random
     arr, low, high, guessCount, guess, message, mid = start()
+    # This will return the new game state with new random array and the message to ask the user if this is their number
     return arr, low, high, guessCount, guess, message, mid, str(arr), message
 
 def start_game(arr_text, current_arr):
