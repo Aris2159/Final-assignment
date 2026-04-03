@@ -8,7 +8,7 @@ ___
 ### You can:
     - Use a random sorted array of 10 numbers
     - Type your own array comma-separated
-    - Guide the computer with Higher. Lower, or Correct
+    - Guide the computer with Higher, Lower, or Correct
     - See guess history and number of steps
 ___
 ### Features:
@@ -51,5 +51,78 @@ ___
     - `Lower` if your number is smaller than the guess
     - `Correct` when the guess matches
 4. Check the History panel for all actions.
+___
+## Video on How To Use
 
-### Video on How To Use
+___
+
+## Problem Breakdown and Computational Thinking
+- **Decomposition:**
+1. Get an array
+2. Sort the array so Binary Search can work correctly
+3. Set search boundaries
+4. Find the middle value
+5. Based on user response:
+    - Higher -> move low to mid + 1
+    - Lower -> move high to mid - 1
+    - Correct -> stop and show the result
+6. Repeat until the number is found or the range is empty
+7. Record each step in history and show total guesses
+
+- **Pattern Recognition:**
+
+The same comparison pattern repeats each round:
+
+    - Compare the guess with the user's target feedback
+    - Remove half of the remaining search space
+    - Recalculate the middle
+    - Ask again
+
+- **Abstraction:** 
+
+The user does not need to see internal details like index math at every step.
+
+The interface simplifies this into three actions:
+``` 
+- Higher
+- Lower
+- Correct
+```
+The complexity is hidden, and interaction stays simple.
+
+
+- **Algorithm Design:**
+
+    - **Input:** User provides an array and feedback.
+    - **Processing:** Sort array compute middle, update boundaries using Binary Search rules, count guesses, and store history.
+    - **Output:** Display current guess question, success/faliure message, guess count, and full action history.
+
+
+### **Flow Chart:**
+```
+Start
+  |
+Get array (typed/random) → Sort
+  |
+Set low=0, high=n-1
+  |
+Guess middle value
+  |
+User feedback?
+  |- Higher → low = mid + 1
+  |- Lower  → high = mid - 1
+  |- Correct → Found (show guesses)
+  |
+If low > high -> Not found
+Else repeat
+```
+___
+## Hugging Face Link
+https://huggingface.co/spaces/Ariss2159/CISC_121
+___
+## Author & Acknowledgment
+**Author:** Aris
+
+**Acknowledgment:**
+- Inspired by binary search algorithms
+- Built using Gradio framework
