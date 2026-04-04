@@ -59,16 +59,25 @@ def guess_number(arr, low, high, guessCount, guess, message, mid, user_input):
         high = mid - 1
     # If the user input is correct then we return with a congratulatory message and the number of guesses it took to find the number
     elif user_input == "Correct":
-        return arr, low, high, guessCount, guess, f"Congratulations! You've found the number {guess} in {guessCount} guesses.", mid
+        # This returns the current game state along with a congratulatory message that includes the number and the guess count
+        return arr, low, high, guessCount, guess, mid, f"Congratulations! You've found the number {guess} in {guessCount} guesses."
     
 
-    
+    # Guess cound will add 1 to keep track of how many time the program made a guess. This will be important for the user to know how many guesses it took to find the number
     guessCount += 1
+    # Uses is statment to check if the low is greater then high which will return with
     if low > high:
-        return arr, low, high, guessCount, guess, "Number not found in the array.", mid
+        # This will return with a message that the number is not found in the array and also the current game state.
+        return arr, low, high, guessCount, guess, mid, "Number not found in the array."
+    
+    # If the game is still running then we calculate the new mid and guess based on the updated low and high values.
+    # This will allow the program to make a new guess based on the user input and continue the game until the number is found.
     mid = (low + high) // 2
+    # This will update the guess to have a new value in the array based on the new mid index
     guess = arr[mid]
+    # This will update the message to ask the user if this is their number based on the new guessed value
     message = f"Is your number {guess}?"
+    # This will return the updated state of each variable to be used in the next round of the game
     return arr, low, high, guessCount, guess, message, mid
 
 # Define a function to handle the user input using a costume array.
@@ -85,18 +94,30 @@ def use_typed_array(arr_text, current_arr):
         message = "Please type integers separated by commas, e.g. 3, 10, 2, 8"
         return current_arr, low, high, guessCount, guess, message, mid, str(current_arr), message
 
+    # This will be used for error handling if the user input is not valid
     try:
+        #This will attempt to put arr variable to result of parsing the raw text input using the parse_array_text function. 
+        # If the input is not valid, it will raise a ValueError
         arr = parse_array_text(raw_text)
+    # If a ValueError is raised then it will set the game state to use the current array and prompt the user to enter a valid input.
     except ValueError:
+        # low is set to 0
         low = 0
+        # high is set to length of current array - 1 beccause the index starts at 0 so the last index is length - 1
         high = len(current_arr) - 1
-        guessCount = 0
+        # Guess coun is set to 1 because we are making the first guess right after this function is called and if its 0 it will be a logical error
+        guessCount = 1
+        # mid is calculated based on adding low and high and then divide it by 2
         mid = (low + high) // 2
+        # guess is set to the value at the mid index of the current array
         guess = current_arr[mid]
+        # Message will be set to a string that prompts the user to enter a valid input of integers seprated by commas and also gives an example of how the input should look like
         message = "Invalid input. Use integers separated by commas, e.g. 3, 10, 2, 8"
+        # This will return the current game state with the current array and the message prompting the user to enter a valid input
         return current_arr, low, high, guessCount, guess, message, mid, str(current_arr), message
-
+    # All the variables init_state_from_array, guess_number, use_typed_array are called to generate a new random array and start the game with it.
     arr, low, high, guessCount, guess, message, mid = init_state_from_array(arr)
+    #This will return the new game state with the new array and the message to ask user if this is their number
     return arr, low, high, guessCount, guess, message, mid, str(arr), message
 
 # Define a function to generate a new random array and start the game with it.
@@ -170,16 +191,22 @@ def on_lower_click(arr, low, high, guessCount, guess, message, mid, history):
     history_out = append_history(history, "Lower", message_out)
     return arr, low, high, guessCount, guess, message, mid, arr_text_out, message_out, history_out, history_out
 
+# Define a function to handle the user input when they click the correct button. This function will update the game state to reflect that the user has found their number and it will also be updated in the history
 def on_complete_click(arr, low, high, guessCount, guess, message, mid, history):
+    # This will call the on_complete function to update the game state to reflect that the user has found their number and it will also update the messahe to congratulate the userand tell them how many guesses it took to find the number
     arr, low, high, guessCount, guess, message, mid, arr_text_out, message_out = on_complete(
-        arr, low, high, guessCount, guess, message, mid
-    )
+        # This will pass all the current game state variables to the on_complete function to update the state based on the user input of correct
+        arr, low, high, guessCount, guess, message, mid)
+    
+    # This will put history_out to the result to append_history function which will take the current history and add a new line with the action
     history_out = append_history(history, "Correct", message_out)
+    # This will return the updated game state along with the updated history that includes the new action and message
     return arr, low, high, guessCount, guess, message, mid, arr_text_out, message_out, history_out, history_out
 
 with gr.Blocks() as demo:
     initial_arr, initial_low, initial_high, initial_guess_count, initial_guess, initial_message, initial_mid = start()
     initial_history = f"Init: {initial_message}"
+    
 
     arr = gr.State(initial_arr)
     low = gr.State(initial_low)
