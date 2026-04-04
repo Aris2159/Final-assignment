@@ -1,7 +1,8 @@
 # **Binary Search Guessing Game With Gradio**
 
 ## About
-An interactive web app where the computer guesses the number you pick from an array using Binary Search. It only works with numbers from 1-100.
+An interactive web app where the computer guesses the number you pick from an array using Binary Search. It only works with numbers from 1-100. 
+It can only only do 10 element at max. A lot of error handling has been put to this so the app would not break.
 
 **Python Version 3.11+**
 ___
