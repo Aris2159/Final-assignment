@@ -100,7 +100,7 @@ The complexity is hidden, and interaction stays simple.
     - **Processing:** Sort array compute middle, update boundaries using Binary Search rules, count guesses, and store history.
     - **Output:** Display current guess question, success/faliure message, guess count, and full action history.
 
-
+___
 ### **Flow Chart:**
 ```
 Start
