@@ -374,5 +374,12 @@ with gr.Blocks() as demo:
         outputs=[arr, low, high, guessCount, guess, message, mid, arr_display, message_display, history, history_display],
     )
 
+    gr.Markdown("Click Generate New Array to start with a new random array or type your own array in the text box and click Use Typed Array to start with your custom array. ")
+    gr.Markdown("It will sort the array automatically. and then the program will make a guess and ask you if this is your number.")
+    gr.Markdown("Then use the Higher, Lower, and Correct buttons to play the game and see the history of your actions and results in the History box.")
+    gr.Markdown("Remove the [] from the array input if you want to enter a custom array. For example, you can enter 3, 10, 2, 8 to create an array with those numbers.")
+    gr.Markdown("Have fun playing the Binary Search Game and see how many guesses it takes to find your number!")
+
+
 # Launch the Gradio app and share it with a public link so that anyone can access it and play the game
 demo.launch(share=True) 
