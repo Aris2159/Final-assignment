@@ -54,6 +54,8 @@ ___
 ___
 ## Video on How To Use
 
+[Watch the demo video](assets/demo.mp4)
+
 ___
 
 ## Problem Breakdown and Computational Thinking
