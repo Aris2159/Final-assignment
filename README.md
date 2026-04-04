@@ -127,4 +127,5 @@ ___
 
 **Acknowledgment:**
 - Inspired by binary search algorithms
+- AI has been **used** for helping make the UI for gradio but not in logic. It has also been **used** in debugging the program as there was an error that was not being found. All the code has been wrrite on my own with some help of AI to help me deepen my understanding and UI is made with help of AI. (AI used for this is Github Copilot)
 - Built using Gradio framework
