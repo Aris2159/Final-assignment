@@ -55,7 +55,7 @@ ___
 ___
 ## Video on How To Use
 
-[Watch the demo video](assets/demo.mp4)
+[[Watch the demo video](assets/demo.mp4)](https://github.com/Aris2159/Final-assignment/blob/main/assets/demo.mp4)
 
 ___
 
